@@ -30,36 +30,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final picker = ImagePicker();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   Future<void> updateData() async {
-    firebase_storage.Reference ref = await firebase_storage.FirebaseStorage.instance.ref('/images/'+DateTime.now().millisecondsSinceEpoch.toString());
-    firebase_storage.UploadTask uploadtask =  ref.putFile(_image!.absolute);
     try {
+      if (_image != null) {
+        firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+            .ref('/images/' + DateTime.now().millisecondsSinceEpoch.toString());
+        firebase_storage.UploadTask uploadtask = ref.putFile(_image!);
+        await uploadtask;
+        var newUrl = await ref.getDownloadURL();
 
-      var newUrl = await ref.getDownloadURL();
-      var name = nameTextController.text.trim();
-      var user_address = address.text.trim();
-      var user_phone = phone.text.trim();
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('users')
-          .where('user_id', isEqualTo: currentUser!.uid)
-          .get();
-    print(querySnapshot);
-      if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot userDocument = querySnapshot.docs[0];
-        await userDocument.reference.update({
-          'name': name,
-          'address': user_address,
-          'phone_no': user_phone,
-          'image': newUrl.toString(),
-          // Add other fields you want to update
-        });
+        var name = nameTextController.text.trim();
+        var user_address = address.text.trim();
+        var user_phone = phone.text.trim();
+
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await _firestore.collection('users').doc(user.uid).update({
+            'name': name,
+            'address': user_address,
+            'phone_no': user_phone,
+            'image': newUrl,
+            // Add other fields you want to update
+          });
+          print('Profile updated successfully');
+        }
+      } else {
+        // Handle the case when no image is selected
+        print('No image selected');
       }
-      print('Data updated successfully');
     } catch (error) {
-      print('Error updating data: $error');
+      print('Error updating profile: $error');
     }
   }
+
+
+
+
+
+
+  // Future<void> updateData() async {
+  //   firebase_storage.Reference ref = await firebase_storage.FirebaseStorage.instance.ref('/images/'+DateTime.now().millisecondsSinceEpoch.toString());
+  //   firebase_storage.UploadTask uploadtask =  ref.putFile(_image!.absolute);
+  //   try {
+  //
+  //     var newUrl = await ref.getDownloadURL();
+  //     var name = nameTextController.text.trim();
+  //     var user_address = address.text.trim();
+  //     var user_phone = phone.text.trim();
+  //
+  //
+  //       await _firestore.collection('users').doc(currentUser.).update({
+  //         'fieldName': 'newValue',
+  //
+  //         'name': name,
+  //         'address': user_address,
+  //         'phone_no': user_phone,
+  //         'image': newUrl.toString(),
+  //         // Add other fields you want to update
+  //       });
+  //
+  //     print('Data updated successfully');
+  //   } catch (error) {
+  //     print('Error updating data: $error');
+  //   }
+  // }
 
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
@@ -68,16 +102,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future getImageGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      if(pickedFile != null)
-      {
-        _image =  File(pickedFile.path);
-      }
-      else{
+      if (pickedFile != null)
+        _image = File(pickedFile.path);
+      else {
         print("No Image Picked");
       }
     });
-
   }
+
+
 
   @override
   Widget build(BuildContext context) {
