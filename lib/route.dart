@@ -5,4 +5,5 @@ class MyRoutes{
   static String profile = '/profile';
   static String admin_home = '/admin_home';
   static String admin_accessories = '/admin_accessories';
+  static String feedback = '/feedback';
 }
