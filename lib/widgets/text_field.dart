@@ -4,12 +4,10 @@ class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
-  final void validator;
 
   const MyTextField(
       {super.key,
 
-         this.validator,
         required this.controller,
         required this.hintText,
         required this.obscureText});

@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
         MyRoutes.register : (context) => RegisterScreen(),
         MyRoutes.profile : (context) => ProfileScreen(),
         MyRoutes.admin_home : (context) => AdminHome(),
-        // MyRoutes.admin_accessories : (context) => AdminAccessories(),
       },
     );
   }
