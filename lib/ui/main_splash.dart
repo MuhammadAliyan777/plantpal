@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/firebase_services/splash_services.dart';
+
+import '../views/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -9,20 +10,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  SplashServices splashScreen = SplashServices();
   @override
   void initState() {
     // TODO: implement initState
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    });
     super.initState();
-    splashScreen.isLogin(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return   Scaffold(
-      body: Center(
-          child: Image.asset('assets/images/logo.png'),
+    return Scaffold(
+      body: Container(
+        child: Center(
+            child: Image.asset('assets/images/logo.png'),
+
+        ),
       ),
+      backgroundColor: Colors.white,
     );
   }
 }

@@ -19,25 +19,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _auth = FirebaseAuth.instance;
 
-  Future<void> loginUser() async {
-    try {
-      // Perform the login using Firebase Authentication
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailTextController.text.trim(),
-        password: passwordTextController.text.trim(),
-      );
-
-      // Save the user's ID to SharedPreferences
-      String userId = userCredential.user!.uid;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('user_id', userId);
-
-      // Navigate based on user presence
-      navigateBasedOnUserId(context, userId);
-    } catch (error) {
-      print("Login error: $error");
-    }
-  }
+  // Future<void> loginUser() async {
+  //   try {
+  //     // Perform the login using Firebase Authentication
+  //     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: emailTextController.text.trim(),
+  //       password: passwordTextController.text.trim(),
+  //     );
+  //
+  //     // Save the user's ID to SharedPreferences
+  //     String userId = userCredential.user!.uid;
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     await prefs.setString('user_id', userId);
+  //
+  //     // Navigate based on user presence
+  //     navigateBasedOnUserId(context, userId);
+  //   } catch (error) {
+  //     print("Login error: $error");
+  //   }
+  // }
   void navigateBasedOnUserId(BuildContext context, String userId) {
     if (userId.isNotEmpty) {
       Navigator.pushReplacementNamed(context, MyRoutes.home);
@@ -46,24 +46,24 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // Future<void> Login() async {
-  //   User? currentUser = FirebaseAuth.instance.currentUser;
-  //
-  //   String userId = currentUser!.uid;
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString('userId', userId);
-  //   _auth.signInWithEmailAndPassword(email: emailTextController.text, password: passwordTextController.text.toString()).then((value) => {
-  //       if(emailTextController.text=="admin@gmail.com" && passwordTextController.text=="admin123")
-  //         {
-  //           Navigator.pushNamed(context, MyRoutes.admin_home),
-  //
-  //         }
-  //       else
-  //         {
-  //           Navigator.pushNamed(context, MyRoutes.home),
-  //         }
-  //   });
-  // }
+  Future<void> Login() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    String userId = currentUser!.uid;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userId);
+    _auth.signInWithEmailAndPassword(email: emailTextController.text, password: passwordTextController.text.toString()).then((value) => {
+        if(emailTextController.text=="admin@gmail.com" && passwordTextController.text=="admin123")
+          {
+            Navigator.pushNamed(context, MyRoutes.admin_home),
+
+          }
+        else
+          {
+            Navigator.pushNamed(context, MyRoutes.home),
+          }
+    });
+  }
 
   @override
   void dispose() {
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if(_formkey.currentState!.validate()){
 
           }
-          loginUser();
+          Login();
         },
           child: Text("Login")
   ),

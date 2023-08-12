@@ -325,7 +325,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return showSplashScreen
-        ? SplashScreen()
+        ? secondsplash()
         : Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: true,

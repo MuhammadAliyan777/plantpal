@@ -406,7 +406,7 @@ class _ShopScreenState extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
     return showSplashScreen
-        ? SplashScreen()
+        ? secondsplash()
         : Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: true,

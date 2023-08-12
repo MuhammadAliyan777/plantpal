@@ -61,13 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: GoogleFonts.getFont(fontFamily,
               color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 40.0),
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-        ),
+
       ),
       bottomNavigationBar: FrontBottomAppBar(),
       body: SingleChildScrollView(
@@ -139,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Builder(
                           builder: (BuildContext context) {
                             return ProductCard(
+
                                 product: product, fontFamily: fontFamily);
                           },
                         );

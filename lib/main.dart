@@ -4,12 +4,14 @@ import 'package:note_app/admin/admin_accessories.dart';
 import 'package:note_app/admin/admin_home.dart';
 import 'package:note_app/firebase_options.dart';
 import 'package:note_app/route.dart';
-import 'package:note_app/ui/splash_screen.dart';
-import 'package:note_app/views/home.dart';
+import 'package:note_app/ui/main_splash.dart';
+import 'package:note_app/views/home_screen.dart';
 import 'package:note_app/views/feedback.dart';
 import 'package:note_app/ui/auth/login_screen.dart';
+import 'package:note_app/views/home_screen.dart';
 import 'package:note_app/views/profile_screen.dart';
 import 'package:note_app/ui/auth/register_screen.dart';
+import 'package:note_app/views/single_product_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -35,9 +37,8 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
+      home:   LoginScreen(),
 
-      initialRoute: userId.isNotEmpty ? MyRoutes.home : MyRoutes.login,
       routes: {
         MyRoutes.home : (context) => HomeScreen(),
         MyRoutes.login : (context) => LoginScreen(),
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
         MyRoutes.profile : (context) => ProfileScreen(),
         MyRoutes.admin_home : (context) => AdminHome(),
         MyRoutes.feedback : (context) => UserFeedback(),
+        MyRoutes.admin_accessories : (context) => AdminAccessory(),
+        // MyRoutes.single_product : (context) => SingleProductScreen(document_id: , current_user_id: current_user_id),
       },
     );
   }

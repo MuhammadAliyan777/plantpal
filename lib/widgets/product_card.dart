@@ -64,7 +64,9 @@ class ProductCard extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => {},
+                      onTap: () => {
+
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
