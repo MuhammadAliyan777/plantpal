@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:test_application/enums/product_type_enum.dart';
-import 'package:test_application/models/plant_attributes.dart';
-import 'package:test_application/models/product.dart';
-import 'package:test_application/widgets/front_bottom_appbar.dart';
-import 'package:test_application/widgets/product_card.dart';
+import 'package:note_app/enums/product_type_enum.dart';
+import 'package:note_app/models/plant_attributes.dart';
+import 'package:note_app/models/product.dart';
+import 'package:note_app/widgets/front_bottom_appbar.dart';
+import 'package:note_app/widgets/product_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

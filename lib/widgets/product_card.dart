@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/models/product.dart';
+import 'package:note_app/models/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductCard extends StatelessWidget {

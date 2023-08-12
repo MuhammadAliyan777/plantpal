@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:test_application/models/order_item.dart';
-import 'package:test_application/models/order_model.dart';
-import 'package:test_application/widgets/splash_screen.dart';
+import 'package:note_app/models/order_item.dart';
+import 'package:note_app/models/order_model.dart';
+import 'package:note_app/widgets/splash_screen.dart';
 
 class CartScreen extends StatefulWidget {
   final String current_user_id;

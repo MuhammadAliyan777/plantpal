@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:test_application/models/cart.dart';
-import 'package:test_application/widgets/splash_screen.dart';
+import 'package:note_app/models/cart.dart';
+import 'package:note_app/widgets/splash_screen.dart';
 
 class SingleProductScreen extends StatefulWidget {
   final String document_id;

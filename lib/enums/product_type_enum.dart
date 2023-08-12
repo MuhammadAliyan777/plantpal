@@ -1,0 +1,3 @@
+enum ProductTypeEnum {
+  plant, accessories,
+}

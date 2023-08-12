@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
-import 'package:test_application/screens/shop_screen.dart';
+import 'package:note_app/views/shop_screen.dart';
+
+import '../views/shop_screen.dart';
 
 class FrontBottomAppBar extends StatefulWidget {
   const FrontBottomAppBar({super.key});
