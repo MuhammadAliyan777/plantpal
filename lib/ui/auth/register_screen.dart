@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../route.dart';
 import '../../widgets/button.dart';
@@ -13,11 +14,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-
+  final _formkey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController email= TextEditingController();
   TextEditingController password= TextEditingController();
-
+bool isLoading = false;
 
 
   User? currentUser = FirebaseAuth.instance.currentUser;
@@ -31,6 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Form(
+              key: _formkey,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -67,6 +69,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 12),
                     MyTextField(
+          validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+               }
+            return null;
+          },
                       controller: name,
                       hintText: "xxxxxxxxxx",
                       obscureText: false,
@@ -86,6 +94,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 12),
                     MyTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       controller: email,
                       hintText: "xyz@email.com",
                       obscureText: false,
@@ -105,6 +119,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 12),
                     MyTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       controller: password,
                       hintText: "xxxxxxxx",
                       obscureText: true,
@@ -112,25 +132,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 30),
 
                     ElevatedButton(
-                      onPressed: () {
+
+                      onPressed: () async {
+                        if(_formkey.currentState!.validate()){
+
+                        }
                         var username = name.text.trim();
                         var useremail = email.text.trim();
                         var userpassword = password.text.trim();
-
-                        FirebaseAuth.instance.createUserWithEmailAndPassword(email: useremail, password: userpassword).whenComplete(() => {
-                          FirebaseFirestore.instance.collection("users").doc().set({
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        var id = prefs.getString('user_id');
+                        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: useremail, password: userpassword).whenComplete(() async => {
+                          await  FirebaseFirestore.instance.collection("users").doc().set({
                             'name':username,
                             'address':null,
                             'phone_no':null,
                             'user_email':useremail,
                             'password':userpassword,
                             'created_at':DateTime.now(),
-                            'user_id':currentUser!.uid,
+                            'user_id':id,
                           }),
                             Navigator.pushNamed(context, MyRoutes.login)
                         });
+
+                      Future.delayed(Duration(seconds: 4),(){
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
                       },
-                       child: Text("Signup"),
+                       child: isLoading? CircularProgressIndicator(color: Colors.white,): Text("Signup"),
                     ),
                     const SizedBox(height: 25),
                     Row(

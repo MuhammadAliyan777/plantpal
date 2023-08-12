@@ -33,9 +33,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> updateData() async {
     try {
       if (_image != null) {
-        firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+          firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
             .ref('/images/' + DateTime.now().millisecondsSinceEpoch.toString());
-        firebase_storage.UploadTask uploadtask = ref.putFile(_image!);
+         firebase_storage.UploadTask uploadtask = ref.putFile(_image!);
         await uploadtask;
         var newUrl = await ref.getDownloadURL();
 
@@ -43,9 +43,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         var user_address = address.text.trim();
         var user_phone = phone.text.trim();
 
-        User? user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          await _firestore.collection('users').doc(user.uid).update({
+        if (currentUser != null) {
+          var query =  await _firestore.collection('users').where('user_id',isEqualTo: currentUser!.uid).get();
+          var documentId = query.docs[0].id;
+          print(currentUser!);
+          await _firestore.collection('users').doc(documentId).update({
             'name': name,
             'address': user_address,
             'phone_no': user_phone,
@@ -187,6 +189,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 12),
                   MyTextField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     controller: nameTextController,
                     hintText: "Sameer Ahmed",
                     obscureText: false,
@@ -207,6 +215,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 12),
                   MyTextField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     controller: address,
                     hintText: "Karachi, Pakistan",
                     obscureText: true,

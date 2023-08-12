@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../admin/admin_home.dart';
 import '../../route.dart';
 import '../../widgets/text_field.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -19,20 +19,51 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _auth = FirebaseAuth.instance;
 
-  void Login(){
+  Future<void> loginUser() async {
+    try {
+      // Perform the login using Firebase Authentication
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailTextController.text.trim(),
+        password: passwordTextController.text.trim(),
+      );
 
-    _auth.signInWithEmailAndPassword(email: emailTextController.text, password: passwordTextController.text.toString()).then((value) => {
-        if(emailTextController.text=="admin@gmail.com" && passwordTextController.text=="admin123")
-          {
-            Navigator.pushNamed(context, MyRoutes.admin_home),
+      // Save the user's ID to SharedPreferences
+      String userId = userCredential.user!.uid;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', userId);
 
-          }
-        else
-          {
-            Navigator.pushNamed(context, MyRoutes.home),
-          }
-    });
+      // Navigate based on user presence
+      navigateBasedOnUserId(context, userId);
+    } catch (error) {
+      print("Login error: $error");
+    }
   }
+  void navigateBasedOnUserId(BuildContext context, String userId) {
+    if (userId.isNotEmpty) {
+      Navigator.pushReplacementNamed(context, MyRoutes.home);
+    } else {
+      Navigator.pushReplacementNamed(context, MyRoutes.login);
+    }
+  }
+
+  // Future<void> Login() async {
+  //   User? currentUser = FirebaseAuth.instance.currentUser;
+  //
+  //   String userId = currentUser!.uid;
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('userId', userId);
+  //   _auth.signInWithEmailAndPassword(email: emailTextController.text, password: passwordTextController.text.toString()).then((value) => {
+  //       if(emailTextController.text=="admin@gmail.com" && passwordTextController.text=="admin123")
+  //         {
+  //           Navigator.pushNamed(context, MyRoutes.admin_home),
+  //
+  //         }
+  //       else
+  //         {
+  //           Navigator.pushNamed(context, MyRoutes.home),
+  //         }
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -86,7 +117,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 12),
                   MyTextField(
-
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     controller: emailTextController,
                     hintText: "xyz@email.com",
                     obscureText: false,
@@ -107,6 +143,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 12),
                   MyTextField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     controller: passwordTextController,
                     hintText: "*********",
                     obscureText: true,
@@ -130,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if(_formkey.currentState!.validate()){
 
           }
-          Login();
+          loginUser();
         },
           child: Text("Login")
   ),

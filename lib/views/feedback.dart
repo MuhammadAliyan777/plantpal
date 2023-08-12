@@ -64,6 +64,12 @@ class _UserFeedbackState extends State<UserFeedback> {
                     ),
                     const SizedBox(height: 12),
                     MyTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       controller: name,
                       hintText: "xxxxxxxxxx",
                       obscureText: false,
@@ -83,6 +89,12 @@ class _UserFeedbackState extends State<UserFeedback> {
                     ),
                     const SizedBox(height: 12),
                     MyTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       controller: email,
                       hintText: "xyz@email.com",
                       obscureText: false,
@@ -102,6 +114,12 @@ class _UserFeedbackState extends State<UserFeedback> {
                     ),
                     const SizedBox(height: 12),
                     MyTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       controller: feedback,
                       hintText: "xxxxxxxx",
                       obscureText: false,
@@ -109,18 +127,18 @@ class _UserFeedbackState extends State<UserFeedback> {
                     const SizedBox(height: 30),
 
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         var username = name.text.trim();
                         var useremail = email.text.trim();
                         var user_feedback = feedback.text.trim();
 
-                          FirebaseFirestore.instance.collection("feedback").doc().set({
+                         await FirebaseFirestore.instance.collection("feedback").doc().set({
                             'name':username,
                             'email':useremail,
                             'user_feedback':user_feedback,
                             'user_id':currentUser!.uid,
                           });
-                          Navigator.pushNamed(context, MyRoutes.feedback);
+                          Navigator.pushNamed(context, MyRoutes.home);
                         },  child: Text("Submit"),),
 
                 ],
